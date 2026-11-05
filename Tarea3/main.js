@@ -1,0 +1,79 @@
+const pokeAPI = "https://pokeapi.co/api/v2/pokemon/";
+const imgElement = document.getElementById("image");
+const nameElement = document.getElementById("name");
+const numberElement = document.getElementById("number");
+
+const altura = document.getElementById("altura");
+const peso = document.getElementById("peso");
+
+const cardElement = document.getElementById("card");
+
+const pistaTexto = document.getElementById("pistaTxt");
+
+const btn_buscar = document.getElementById("btn_buscar");
+
+const div = document.getElementById("btn_buscar");
+
+
+
+let fetchData = async (url) => {
+  try {
+    let response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Error de red: ${response.statusText}`);
+    }
+    let data = await response.json();
+
+    imgElement.src = data.sprites.other.dream_world.front_default;
+    nameElement.innerText = `${data.name}`;
+    numberElement.innerText = `#${data.id}`;
+
+    let alturaCorrecta = data.height /10
+    let pesoCorrecto = data.weight /10
+
+
+    altura.innerText= alturaCorrecta + "m";
+    peso.innerText=  pesoCorrecto+ "km";
+
+    let types = data.types;
+    types.replaceChildren();
+   
+    types.forEach((element) => {
+      console.log(element.type.name);
+
+      let newButton = document.createElement("button");
+      newButton.classList.add(element.type.name);
+      newButton.innerText = element.type.name;
+      cardElement.appendChild(newButton);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+   let aviso = document.createElement('p');
+
+btn_buscar.addEventListener('click', (evento) => {
+  const elnombre = pistaTexto.value;
+   aviso.textContent="";
+
+  if(elnombre===""){
+
+   
+   aviso.textContent="Introduce un nombre porfavor";
+
+   document.body?.append(aviso);
+
+
+    return;
+
+  }
+
+
+  
+fetchData(`${pokeAPI}${elnombre}`);
+
+
+
+
+});
