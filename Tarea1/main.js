@@ -55,6 +55,10 @@ function getRandomNumber(min, max) {
 
 
 
+
+
+
+
 btn_cargarPokemon.addEventListener("click", () => {
 let number = getRandomNumber(1, 151);
 fetchData(`${pokeAPI}${number}`);
